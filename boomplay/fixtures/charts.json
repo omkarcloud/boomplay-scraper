@@ -1,0 +1,130 @@
+{
+ "chartGrps": [
+  {
+   "name": "Weekly Charts",
+   "colGrpID": 10112,
+   "countryGrpID": 10112,
+   "value": "Charts",
+   "layout": 2,
+   "cols": [
+    {
+     "extend": "1000005",
+     "publicYear": "0",
+     "colType": 1,
+     "lowIconID": "group10/M00/08/09/48f56638c51341749840abffc1545c9c_200_200.jpg",
+     "name": "Top 100 Nigeria",
+     "smIconID": "group10/M00/08/09/48f56638c51341749840abffc1545c9c_320_320.jpg",
+     "bigIconID": "group10/M00/08/09/48f56638c51341749840abffc1545c9c_464_464.jpg",
+     "colID": 850210,
+     "version": 14158
+    },
+    {
+     "extend": "1000005",
+     "publicYear": "0",
+     "colType": 1,
+     "lowIconID": "group10/M00/11/24/88717e19fb234c34883b191ae05635bb_200_200.png",
+     "name": "Top 100 Africa",
+     "smIconID": "group10/M00/11/24/88717e19fb234c34883b191ae05635bb_320_320.png",
+     "bigIconID": "group10/M00/11/24/88717e19fb234c34883b191ae05635bb_464_464.png",
+     "colID": 880218,
+     "version": 13538
+    },
+    {
+     "extend": "1000005",
+     "publicYear": "0",
+     "colType": 1,
+     "lowIconID": "group10/M00/08/09/6f29c31d2b6f4eedb1cf4a8801afe0e7_200_200.jpg",
+     "name": "Top 100 International",
+     "smIconID": "group10/M00/08/09/6f29c31d2b6f4eedb1cf4a8801afe0e7_320_320.jpg",
+     "bigIconID": "group10/M00/08/09/6f29c31d2b6f4eedb1cf4a8801afe0e7_464_464.jpg",
+     "colID": 856815,
+     "version": 13433
+    }
+   ]
+  },
+  {
+   "name": "Daily Charts",
+   "colGrpID": 10141,
+   "countryGrpID": 10141,
+   "value": "Charts",
+   "layout": 2,
+   "cols": [
+    {
+     "extend": "1000005",
+     "publicYear": "0",
+     "colType": 1,
+     "lowIconID": "group10/M00/11/24/2f14018322e84396a27a4e5608274fa9_200_200.png",
+     "name": "Daily 100 Nigeria",
+     "smIconID": "group10/M00/11/24/2f14018322e84396a27a4e5608274fa9_320_320.png",
+     "bigIconID": "group10/M00/11/24/2f14018322e84396a27a4e5608274fa9_464_464.png",
+     "colID": 2491279,
+     "version": 8668
+    },
+    {
+     "extend": "1000005",
+     "publicYear": "0",
+     "colType": 1,
+     "lowIconID": "group10/M00/11/24/fc80dc564f7d40a5801f24af12721120_200_200.png",
+     "name": "Top New Songs Nigeria",
+     "smIconID": "group10/M00/11/24/fc80dc564f7d40a5801f24af12721120_320_320.png",
+     "bigIconID": "group10/M00/11/24/fc80dc564f7d40a5801f24af12721120_464_464.png",
+     "colID": 2491300,
+     "version": 8814
+    },
+    {
+     "extend": "1000005",
+     "publicYear": "0",
+     "colType": 1,
+     "lowIconID": "group10/M00/11/24/83e2c82dacf44b5d8d4df726da4a1e96_200_200.png",
+     "name": "Daily Rising Nigeria",
+     "smIconID": "group10/M00/11/24/83e2c82dacf44b5d8d4df726da4a1e96_320_320.png",
+     "bigIconID": "group10/M00/11/24/83e2c82dacf44b5d8d4df726da4a1e96_464_464.png",
+     "colID": 46064003,
+     "version": 5001
+    }
+   ]
+  },
+  {
+   "name": "Monthly Charts",
+   "colGrpID": 10143,
+   "countryGrpID": 10143,
+   "value": "Charts",
+   "layout": 2,
+   "cols": [
+    {
+     "extend": "1000005",
+     "publicYear": "0",
+     "colType": 1,
+     "lowIconID": "group10/M00/11/24/ef5740bed0dc4f8a806010deaed6bcf5_200_200.jpg",
+     "name": "Monthly 100 Nigeria",
+     "smIconID": "group10/M00/11/24/ef5740bed0dc4f8a806010deaed6bcf5_320_320.jpg",
+     "bigIconID": "group10/M00/11/24/ef5740bed0dc4f8a806010deaed6bcf5_464_464.jpg",
+     "colID": 2814354,
+     "version": 1512
+    },
+    {
+     "extend": "1000005",
+     "publicYear": "0",
+     "colType": 1,
+     "lowIconID": "group10/M00/11/16/6063909902554453b7d40ff96df5f400_200_200.jpg",
+     "name": "Monthly 100 Africa",
+     "smIconID": "group10/M00/11/16/6063909902554453b7d40ff96df5f400_320_320.jpg",
+     "bigIconID": "group10/M00/11/16/6063909902554453b7d40ff96df5f400_464_464.jpg",
+     "colID": 55530070,
+     "version": 235
+    },
+    {
+     "extend": "1000005",
+     "publicYear": "0",
+     "colType": 1,
+     "lowIconID": "group10/M00/11/24/b21049ae7eec4e2994fd8d62cca53a2a_200_200.jpg",
+     "name": "Monthly 100 International",
+     "smIconID": "group10/M00/11/24/b21049ae7eec4e2994fd8d62cca53a2a_320_320.jpg",
+     "bigIconID": "group10/M00/11/24/b21049ae7eec4e2994fd8d62cca53a2a_464_464.jpg",
+     "colID": 2803741,
+     "version": 841
+    }
+   ]
+  }
+ ]
+}

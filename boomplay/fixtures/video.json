@@ -1,0 +1,29 @@
+{
+ "video": {
+  "iconID": "group10/M00/12/10/81be3633a6154b288a46b74d248801c6.jpg",
+  "sourceID": "group10/M00/10/18/c0b8bd2cd6cb4a888d41502951cdc227.mp4",
+  "bannerID": "group10/M00/12/10/ee88c97f65b244b3818c85d2c07768e9.jpg",
+  "artist": {
+   "colID": 24994750,
+   "singerID": 4378670,
+   "name": "Prabhjot",
+   "smIconID": "group10/M00/05/01/8eb3efe6596e47fb95149c2873aacf03_320_320.jpg",
+   "lowIconID": "group10/M00/05/01/8eb3efe6596e47fb95149c2873aacf03_200_200.jpg",
+   "iconMagicUrl": "group10/M00/05/01/8eb3efe6596e47fb95149c2873aacf03.jpg",
+   "sex": "M"
+  },
+  "collectCount": 176,
+  "videoID": 1011018,
+  "permission": 61,
+  "type": "MUSIC_VIDEO",
+  "commentCount": 118,
+  "duration": "00:03:10",
+  "descr": "",
+  "shareCount": 24,
+  "videoSource": "BOOMPLAY",
+  "name": "Chann Ve",
+  "viewCount": 9434,
+  "downloadCount": 610,
+  "status": 1
+ }
+}

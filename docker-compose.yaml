@@ -1,0 +1,11 @@
+services:
+  boomplay-scraper:
+    build: .
+    restart: unless-stopped
+    shm_size: "1gb"
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+      # Optional — only for reading boomplay.com from another country.
+      # - BOOMPLAY_PROXY=http://user:pass@host:port

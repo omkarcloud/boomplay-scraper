@@ -1,0 +1,19 @@
+{
+ "code": "0",
+ "data": {
+  "music": {
+   "musicID": 211634092,
+   "musicMid": "EQtXG92EOYm6s9dE2pQ58LOJ",
+   "name": "Love",
+   "isRecomBlocked": 0
+  },
+  "artists": [
+   {
+    "colID": 1182,
+    "name": "Burna Boy",
+    "isRecomBlocked": 0,
+    "afid": 101294989
+   }
+  ]
+ }
+}

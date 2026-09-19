@@ -1,0 +1,34 @@
+{
+ "genres": [
+  {
+   "categoryID": 53,
+   "category": "Afrobeats",
+   "iconID": "group10/M00/12/03/d3b704fb2917450f840b1ab0ef9405db_464_464.png",
+   "bannerID": "group10/M00/12/03/546f091dd0274e438cd3a46c3539cfe6.png",
+   "iconMagicUrl": "group10/M00/12/03/d3b704fb2917450f840b1ab0ef9405db.png",
+   "picColor": "19,60,115"
+  },
+  {
+   "categoryID": 54,
+   "category": "Afropop",
+   "iconID": "group10/M00/12/03/6ad58345d38241189305798e3f146b02_464_464.png",
+   "bannerID": "group10/M00/12/03/85d8a33425dc4893af73b05d8ef3e73e.png",
+   "iconMagicUrl": "group10/M00/12/03/6ad58345d38241189305798e3f146b02.png",
+   "picColor": "117,38,71"
+  },
+  {
+   "categoryID": 42,
+   "category": "Gospel",
+   "iconID": "group10/M00/12/03/b20a14ec080343528a078374dcce3a68_464_464.png",
+   "bannerID": "group10/M00/12/03/18d56a3256c94e7d92771d102a7af17c.png",
+   "iconMagicUrl": "group10/M00/12/03/b20a14ec080343528a078374dcce3a68.png",
+   "picColor": "143,60,25"
+  }
+ ],
+ "colgrpDetail": {
+  "countryGrpID": 10008,
+  "name": "Genres",
+  "layout": 6,
+  "grpType": "Genres"
+ }
+}

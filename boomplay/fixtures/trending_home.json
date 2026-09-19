@@ -1,0 +1,508 @@
+{
+ "data": [
+  {
+   "categoryId": 1,
+   "type": 2,
+   "mainTitle": "Trending Songs",
+   "tags": [
+    {
+     "tagId": -1,
+     "name": "Hot",
+     "ruleDesc": ""
+    },
+    {
+     "tagId": -2,
+     "name": "New",
+     "ruleDesc": ""
+    },
+    {
+     "tagId": 42,
+     "name": "Gospel",
+     "ruleDesc": ""
+    }
+   ],
+   "musics": [
+    {
+     "musicID": 212243586,
+     "colID": 113914773,
+     "name": "Baba ft. Zlatan",
+     "deaution": "00:02:42",
+     "exclusion": "F",
+     "permission": 61,
+     "liftNum": "0",
+     "rcmdEngine": "TrendingSongs",
+     "rcmdEngineVersion": 1,
+     "hdSourceID": "group10/M00/09/17/60770576aa6a4be4ad945cbadc68a70a.mp3",
+     "hdSize": 6519406,
+     "mdSourceID": "group10/M00/09/17/c83a50b0ffe748b68af90fe06e06d831.mp3",
+     "mdSize": 2607788,
+     "ldSourceID": "group10/M00/09/17/bbc8f446011345b7adb39fa548bd4431.mp3",
+     "ldSize": 1303964,
+     "collectCount": 0,
+     "shareCount": 0,
+     "commentCount": 0,
+     "explicit": 0,
+     "cpID": 15929,
+     "beAlbum": {
+      "colID": 113914773,
+      "name": "Baba",
+      "iconMagicUrl": "group10/M00/09/17/697c88bde9fc44278ddd7cbb74f63bc8H1500W1500.jpg",
+      "picColor": "52,49,49"
+     },
+     "beArtist": {
+      "colID": 93996140,
+      "name": "Hotkeed"
+     }
+    },
+    {
+     "musicID": 248007964,
+     "colID": 130262657,
+     "name": "Gratitude",
+     "deaution": "00:02:49",
+     "exclusion": "F",
+     "permission": 61,
+     "liftNum": "0",
+     "rcmdEngine": "TrendingSongs",
+     "rcmdEngineVersion": 1,
+     "hdSourceID": "group10/M00/04/29/db3d44ad3a894025a201d8c84cf041fd.mp3",
+     "hdSize": 6799324,
+     "mdSourceID": "group10/M00/04/29/283c79ec720046bfbb658abcf395d0c1.mp3",
+     "mdSize": 2719833,
+     "ldSourceID": "group10/M00/04/29/1b48572ecde74e18bb9a953506ead391.mp3",
+     "ldSize": 1360003,
+     "collectCount": 0,
+     "shareCount": 0,
+     "commentCount": 0,
+     "explicit": 0,
+     "cpID": 16063,
+     "beAlbum": {
+      "colID": 130262657,
+      "name": "M$NEY",
+      "iconMagicUrl": "group10/M00/04/29/3e67a1c566fb424cb1045b916bee5b51H1500W1500.jpg",
+      "picColor": "78,83,85"
+     },
+     "beArtist": {
+      "colID": 1447149,
+      "name": "Asake"
+     }
+    },
+    {
+     "musicID": 265023551,
+     "colID": 138286021,
+     "name": "JESUS I LOVE YOU",
+     "deaution": "00:02:42",
+     "exclusion": "F",
+     "permission": 61,
+     "liftNum": "New",
+     "rcmdEngine": "TrendingSongs",
+     "rcmdEngineVersion": 1,
+     "hdSourceID": "group10/M00/08/18/60fecc79a3154a4fb2cf3f4a945997b8.mp3",
+     "hdSize": 6521400,
+     "mdSourceID": "group10/M00/08/18/45999f46481344f58e2ae8dfb3e46962.mp3",
+     "mdSize": 2609032,
+     "ldSourceID": "group10/M00/08/18/9b66b3ecf0a3471cb8064834b1a9455d.mp3",
+     "ldSize": 1304581,
+     "collectCount": 0,
+     "shareCount": 0,
+     "commentCount": 0,
+     "explicit": 0,
+     "cpID": 33762,
+     "beAlbum": {
+      "colID": 138286021,
+      "name": "JESUS I LOVE YOU",
+      "iconMagicUrl": "group10/M00/08/18/a51f56614d8f4a28a6664c33ca6817e1H800W800.jpeg",
+      "picColor": "123,68,0"
+     },
+     "beArtist": {
+      "colID": 25923813,
+      "name": "Chizie"
+     }
+    }
+   ]
+  },
+  {
+   "categoryId": 4,
+   "type": 5,
+   "mainTitle": "Trending Albums",
+   "subTitle": "",
+   "albums": [
+    {
+     "colID": 139782540,
+     "name": "SWAGUU",
+     "colType": 5,
+     "albumType": "ALBUM",
+     "iconMagicUrl": "group10/M00/09/18/259b332b703c448da11fac8bce782fa9H1500W1500.jpg",
+     "picColor": "77,84,88",
+     "permission": 61,
+     "explicit": 1,
+     "beArtist": {
+      "colID": 3493459,
+      "name": "Seyi Vibez"
+     },
+     "rcmdEngine": "TrendingAlbums",
+     "rcmdEngineVersion": 1
+    },
+    {
+     "colID": 126993756,
+     "name": "Flames On The Altar",
+     "colType": 5,
+     "albumType": "ALBUM",
+     "iconMagicUrl": "group10/M00/03/03/8ccb247db7164a928e7e266851f7c194H1024W1024.jpeg",
+     "picColor": "48,35,31",
+     "permission": 61,
+     "explicit": 0,
+     "beArtist": {
+      "colID": 115004229,
+      "name": "Toprock Gospel"
+     },
+     "rcmdEngine": "TrendingAlbums",
+     "rcmdEngineVersion": 1
+    },
+    {
+     "colID": 130262657,
+     "name": "M$NEY",
+     "colType": 5,
+     "albumType": "ALBUM",
+     "iconMagicUrl": "group10/M00/04/29/3e67a1c566fb424cb1045b916bee5b51H1500W1500.jpg",
+     "picColor": "78,83,85",
+     "permission": 61,
+     "explicit": 1,
+     "beArtist": {
+      "colID": 1447149,
+      "name": "Asake"
+     },
+     "rcmdEngine": "TrendingAlbums",
+     "rcmdEngineVersion": 1
+    }
+   ]
+  },
+  {
+   "categoryId": 3,
+   "type": 4,
+   "mainTitle": "Hot New Releases",
+   "albums": [
+    {
+     "colID": 140336902,
+     "name": "Let It Go",
+     "colType": 5,
+     "albumType": "SINGLE",
+     "iconMagicUrl": "group10/M00/09/15/c426bdc395d14f88a94c78a33badc39dH1500W1500.jpg",
+     "picColor": "80,47,39",
+     "permission": 61,
+     "explicit": 0,
+     "beArtist": {
+      "colID": 4368844,
+      "name": "Young Jonn"
+     },
+     "rcmdEngine": "NewReleases",
+     "rcmdEngineVersion": 1
+    },
+    {
+     "colID": 139120997,
+     "name": "FAFA",
+     "colType": 5,
+     "albumType": "SINGLE",
+     "iconMagicUrl": "group10/M00/09/11/141ddb31e6f94781b40d7c49585ca9cfH1500W1500.jpg",
+     "picColor": "96,79,62",
+     "permission": 61,
+     "explicit": 0,
+     "beArtist": {
+      "colID": 83863842,
+      "name": "Krizmoni"
+     },
+     "rcmdEngine": "NewReleases",
+     "rcmdEngineVersion": 1
+    },
+    {
+     "colID": 140440500,
+     "name": "Great River",
+     "colType": 5,
+     "albumType": "SINGLE",
+     "iconMagicUrl": "group10/M00/09/16/1495b8e0769040aaaaf2a1559b240512H1500W1500.jpg",
+     "picColor": "79,53,35",
+     "permission": 61,
+     "explicit": 0,
+     "beArtist": {
+      "colID": 23276529,
+      "name": "Stiv Divine"
+     },
+     "rcmdEngine": "NewReleases",
+     "rcmdEngineVersion": 1
+    }
+   ]
+  },
+  {
+   "categoryId": 6,
+   "type": 7,
+   "mainTitle": "Just Updated",
+   "playlists": [
+    {
+     "colID": 1427803,
+     "name": "Top New Music",
+     "colType": 1,
+     "iconMagicUrl": "group10/M00/09/15/9a7c914fc5d1474da80799cea67ed9dbH800W800.png",
+     "picColor": "107,25,24",
+     "updateTime": 1789812001000,
+     "rcmdEngine": "OMS",
+     "rcmdEngineVersion": 0
+    },
+    {
+     "colID": 1493729,
+     "name": "Top Choice Music",
+     "colType": 1,
+     "iconMagicUrl": "group10/M00/09/18/baf6ee2a7b3f4f5ca143b9430656893dH800W800.png",
+     "picColor": "46,46,46",
+     "updateTime": 1789812001000,
+     "rcmdEngine": "OMS",
+     "rcmdEngineVersion": 0
+    },
+    {
+     "colID": 3315057,
+     "name": "Afrobeats & U",
+     "colType": 1,
+     "iconMagicUrl": "group10/M00/08/28/f7c876b3e28c429f92c82dd0b05a6f3fH800W800.png",
+     "picColor": "148,48,3",
+     "updateTime": 1789812001000,
+     "rcmdEngine": "OMS",
+     "rcmdEngineVersion": 0
+    }
+   ]
+  },
+  {
+   "categoryId": 5,
+   "type": 6,
+   "mainTitle": "Trending Playlists",
+   "subTitle": "",
+   "playlists": [
+    {
+     "colID": 29521979,
+     "name": "Best of Lucky Dube",
+     "colType": 1,
+     "iconMagicUrl": "group10/M00/08/03/eec319de427c4298aa57163d7f742951.jpg",
+     "picColor": "13,138,19",
+     "rcmdEngine": "TrendingPlaylists",
+     "rcmdEngineVersion": 1
+    },
+    {
+     "colID": 15036656,
+     "name": "Focus: Omah Lay",
+     "colType": 1,
+     "iconMagicUrl": "group10/M00/05/07/0afdc22ba28843b28449496b501134d8H800W800.png",
+     "picColor": "82,81,96",
+     "rcmdEngine": "TrendingPlaylists",
+     "rcmdEngineVersion": 1
+    },
+    {
+     "colID": 3087257,
+     "name": "Focus: Wizkid",
+     "colType": 1,
+     "iconMagicUrl": "group10/M00/07/17/f601fb3e91cc4895b8452b7b8d169a51.jpg",
+     "picColor": "120,118,111",
+     "rcmdEngine": "TrendingPlaylists",
+     "rcmdEngineVersion": 1
+    }
+   ]
+  },
+  {
+   "categoryId": 2,
+   "type": 3,
+   "mainTitle": "Trending Artists",
+   "subTitle": "",
+   "artists": [
+    {
+     "colID": 3493459,
+     "name": "Seyi Vibez",
+     "colType": 2,
+     "iconMagicUrl": "group10/M00/02/21/aba945e15b8546578a8a2e18523b2019H1080W1080.JPG",
+     "picColor": "102,58,47",
+     "liftNum": "1",
+     "followerCount": 409018,
+     "playCount": 890723211,
+     "afid": 101785360,
+     "rcmdEngine": "TrendingArtists",
+     "rcmdEngineVersion": 1
+    },
+    {
+     "colID": 1447149,
+     "name": "Asake",
+     "colType": 2,
+     "iconMagicUrl": "group10/M00/02/12/384be2c8e5c5410d9b1e977636322bb8H1365W1365.jpg",
+     "picColor": "74,64,49",
+     "liftNum": "-1",
+     "followerCount": 563009,
+     "playCount": 1132655417,
+     "afid": 120112207,
+     "rcmdEngine": "TrendingArtists",
+     "rcmdEngineVersion": 1
+    },
+    {
+     "colID": 11186884,
+     "name": "Omah Lay",
+     "colType": 2,
+     "iconMagicUrl": "group10/M00/C5/27/503b8b68e7e4425dabd15ea4ee3a4030.jpg",
+     "picColor": "37,49,132",
+     "liftNum": "0",
+     "followerCount": 752185,
+     "playCount": 1218709713,
+     "afid": 107625048,
+     "rcmdEngine": "TrendingArtists",
+     "rcmdEngineVersion": 1
+    }
+   ]
+  },
+  {
+   "categoryId": 8,
+   "type": 9,
+   "mainTitle": "Popular Episodes",
+   "episodes": [
+    {
+     "episodeID": 7943375,
+     "title": "S2 EP 13: Out-Short Skirt I Zero Conditions Podcast",
+     "episodeType": 0,
+     "permission": 61,
+     "duration": 6959,
+     "hdStreamSourceID": "",
+     "mdStreamSourceID": "https://mcdn.podbean.com/mf/web/ybmuadnnxiucaa23/ZC_S2_EP_12_POD_AUDIO8ec34.mp3",
+     "ldStreamSourceID": "",
+     "hdStreamSize": 0,
+     "mdStreamSize": 167537202,
+     "ldStreamSize": 0,
+     "description": "On this episode, the Zero Conditions hosts, in a more interesting conversation, team up again with Quincy Jones in a conversation that centres on but is not limited to fraud culture, Afrobeats, pop culture, and lots more. Brought to you by Chivas Regal",
+     "pubDate": 1724056433000,
+     "rcmdEngine": "OMS",
+     "rcmdEngineVersion": 0,
+     "beShow": {
+      "showID": 72442,
+      "title": "Zero Conditions Podcast",
+      "smIconID": null,
+      "iconMagicUrl": "group10/M00/05/17/ac7c790f576e416eb78ff2dd6fada5bc.jpg"
+     },
+     "iconMagicUrl": "group10/M00/08/20/b44a725b862b43a998b7cf150098839aH2980W2980.jpg",
+     "beAuthor": {
+      "authorID": 1797660,
+      "name": "zeroconditionspod"
+     },
+     "bpResource": false,
+     "explicit": 1
+    },
+    {
+     "episodeID": 7950972,
+     "title": "The Gospel According to Dr Abel Damina  | The Honest Bunch Podcast",
+     "episodeType": 0,
+     "permission": 61,
+     "duration": 8925,
+     "hdStreamSourceID": "",
+     "mdStreamSourceID": "https://media-streaming.afripods.com/audio/7c19707f9ffd5960c83343fee0938b9e37c552159ac9015325c0511723cd8779.mp3?awEpisodeId=e000d190-5ee0-11ef-a655-471f0ce16261&awCollectionId=cea28aa5-616a-4408-9f16-aeb6985485fd&listenerId=rss&playLive=true",
+     "ldStreamSourceID": "",
+     "hdStreamSize": 0,
+     "mdStreamSize": 215342810,
+     "ldStreamSize": 0,
+     "description": "The Honest Bunch is an audio-visual podcast that focuses on discussing real millennial and Gen Z issues with no holds barred.",
+     "pubDate": 1724152140000,
+     "rcmdEngine": "OMS",
+     "rcmdEngineVersion": 0,
+     "beShow": {
+      "showID": 30629,
+      "title": "The HonestBunch Podcast",
+      "smIconID": null,
+      "iconMagicUrl": "group10/M00/06/16/83f47061f09e4d889d7b38e4820000cdH1400W1400.jpg"
+     },
+     "iconMagicUrl": "group10/M00/08/21/0fd0409da3504a5685130dd03e630a5bH500W500.jpg",
+     "beAuthor": {
+      "authorID": 1753662,
+      "name": "Glitch Africa"
+     },
+     "bpResource": false,
+     "explicit": 0
+    },
+    {
+     "episodeID": 7913392,
+     "title": "The \"Bad Bitch on Vibes\" Episode ft. Ashley Okoli",
+     "episodeType": 0,
+     "permission": 61,
+     "duration": 6043,
+     "hdStreamSourceID": "",
+     "mdStreamSourceID": "https://sphinx.acast.com/p/open/s/62e95c1847c51300128261c0/e/66bbcbb6a7f4fbb9911361fb/media.mp3",
+     "ldStreamSourceID": "",
+     "hdStreamSize": 0,
+     "mdStreamSize": 96698976,
+     "ldStreamSize": 0,
+     "description": "This week, the podcast is joined by the baddie queen of vibes, Ashley Okoli! After giving some sage advice, Ashley talks about growing up in Ojo as a first daughter, dropping out of university and treading the path less beaten with not just makeup and fashion, but also life. She also introduces us to her film \"Gemini Confessions\" and explains what it's like to live life on vibes!You can buy tickets to our London show at Hackney Empire on September 8th right here - https://www.hackneyempire.co.uk/events/i-said-what-i-said-liveDon’t forget to use #ISWIS or #ISWISPodcast to share your thoughts while listening to the podcast on Twitter! Rate the show 5 stars on whatever app you listen to and leave a review, share with everyone you know and if you also watch on YouTube, subscribe, like and leave a comment!Make sure to follow us on Twitter: @ISWISPodcastInstagram: @isaidwhatisaidpodYoutube: @isaidwhatisaidpod Hosted on Acast. See acast.com/privacy for more information.",
+     "pubDate": 1723604456000,
+     "rcmdEngine": "OMS",
+     "rcmdEngineVersion": 0,
+     "beShow": {
+      "showID": 5194,
+      "title": "I Said What I Said",
+      "smIconID": null,
+      "iconMagicUrl": "group10/M00/02/10/1c5796c7b2bd4b519b1ae934ee24029eH3000W3000.jpg"
+     },
+     "iconMagicUrl": "group10/M00/08/15/03ad811e411341e981591e5edea3c2e1H3000W3000.jpg",
+     "beAuthor": {
+      "authorID": 1902685,
+      "name": "The Carousel Network"
+     },
+     "bpResource": false,
+     "explicit": 1
+    }
+   ]
+  },
+  {
+   "categoryId": 7,
+   "type": 8,
+   "mainTitle": "Top Podcasts",
+   "shows": [
+    {
+     "showID": 3314,
+     "showTitle": "Apostle Joshua Selman",
+     "showType": 0,
+     "picColor": "147,106,131",
+     "permission": 61,
+     "iconMagicUrl": "group10/M00/12/18/d8c29794c3ac465299646efd99ab0514.jpg",
+     "pubDate": 1789415650000,
+     "explicit": 0,
+     "rcmdEngine": "OMS",
+     "rcmdEngineVersion": 0,
+     "beAuthor": {
+      "authorID": 3497,
+      "name": "Apostle Joshua Selman"
+     }
+    },
+    {
+     "showID": 72442,
+     "showTitle": "Zero Conditions Podcast",
+     "showType": 0,
+     "picColor": "122,122,0",
+     "permission": 61,
+     "iconMagicUrl": "group10/M00/05/17/ac7c790f576e416eb78ff2dd6fada5bc.jpg",
+     "pubDate": 1729516691000,
+     "explicit": 1,
+     "rcmdEngine": "OMS",
+     "rcmdEngineVersion": 0,
+     "beAuthor": {
+      "authorID": 1797660,
+      "name": "zeroconditionspod"
+     }
+    },
+    {
+     "showID": 95462,
+     "showTitle": "VT Podcast “Ideas That Matter”",
+     "showType": 0,
+     "picColor": "69,53,46",
+     "permission": 61,
+     "iconMagicUrl": "group10/M00/05/06/c18a280fe3cb4228b385ef80558356bf.jpg",
+     "pubDate": 1708281960000,
+     "explicit": 0,
+     "rcmdEngine": "OMS",
+     "rcmdEngineVersion": 0,
+     "beAuthor": {
+      "authorID": 136996,
+      "name": "Africa Podcast Network"
+     }
+    }
+   ]
+  }
+ ],
+ "code": "0",
+ "msg": null
+}
