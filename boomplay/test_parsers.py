@@ -10,6 +10,7 @@ import pytest
 
 from boomplay import parsers, refs, schemas, shared, web
 from schema_fields import load_query
+from scraper_utils.testing import hosted_only
 
 FX = os.path.join(os.path.dirname(__file__), "fixtures")
 
@@ -221,3 +222,38 @@ def test_list_page_splits_empty_page(monkeypatch):
     monkeypatch.setattr(shared.fetch, "app_json", fake)
     items = shared.list_page("item/getPlaylists", {}, "playlists", 2, 20, "NG")
     assert len(items) == 20 and calls == [(1, 20), (2, 10), (3, 10)]
+
+
+class _FakeBox:
+    """browser_client.fetch_any stand-in: records every candidate list and
+    answers from the candidate `picks` names, raising BoxRefused on the
+    picks given as ("refuse", i)."""
+    def __init__(self, picks):
+        self.picks, self.offered, self.sessions, self.calls = list(picks), [], [], []
+
+    def __call__(self, site, candidates, **kw):
+        import browser_client
+        self.calls.append(site)
+        self.offered.append([p for p, _s in candidates])
+        self.sessions.append([s for _p, s in candidates])
+        pick = self.picks.pop(0)
+        if isinstance(pick, tuple):
+            raise browser_client.BoxRefused("refused", candidate=pick[1])
+        return pick, {"status": 200, "body": f"from-browser-{pick}", "final_url": kw.get("url")}
+
+
+@hosted_only
+def test_browser_mode_offers_burst_sessions_on_the_identitys_exit(monkeypatch):
+    import config
+    import browser_client
+    from boomplay import fetch
+    monkeypatch.setattr(config, "INPAGE_BROWSER_SLOTS", 2)
+    monkeypatch.setattr(config, "BROWSER_BURST_FACTOR", 4)
+    box = _FakeBox([1, 1, ("refuse", 0)])
+    monkeypatch.setattr(browser_client, "fetch_any", box)
+    identity = {"cookies": {}, "ua": "ua", "proxy": "http://u:p@gw:10009", "mode": "browser"}
+    assert fetch._browser_once("/songs/1", identity) == "from-browser-1"
+    assert fetch._browser_once("/songs/2", identity) == "from-browser-1"
+    assert box.offered[0] == ["http://u:p@gw:10009"] * 8
+    assert box.sessions[0] == [f"boomplay@p10009#{i}" for i in range(8)] and box.sessions[1] == box.sessions[0]
+    assert fetch._browser_once("/songs/3", identity) is None                          # refused = burned, as before

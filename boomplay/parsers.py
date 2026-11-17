@@ -23,6 +23,7 @@ Dropped on purpose (noise / not public data):
 import re
 
 from deezer.parsers import _bool, _int, iso_datetime, ordered, strip_html  # noqa: F401  (ordered: re-exported)
+from scraper_utils.text import trimmed as _str
 
 WEB_BASE = "https://www.boomplay.com"
 STATIC_BASE = "https://source.boomplaymusic.com/"
@@ -37,12 +38,6 @@ _SIZE_RE = re.compile(r"_(\d+)_(\d+)(\.[A-Za-z]+)$")
 
 
 # ---- value helpers ------------------------------------------------------------
-
-def _str(value):
-    if value is None:
-        return None
-    text = str(value).strip()
-    return text or None
 
 
 def _tf(value):

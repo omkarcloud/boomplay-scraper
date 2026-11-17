@@ -21,11 +21,17 @@ WEBSITE — https://www.boomplay.com/<path>
   tabs beyond songs/users, user profiles). Cloudflare's managed Turnstile
   challenge guards most paths PER PATH (charts, trending, videos, users are
   open): a request first goes out cookie-less; on a challenge the shared
-  identity is minted ONCE by a headed patchright Chrome (real mouse click on
-  the Turnstile checkbox when it renders), validated over curl, then its
-  cookies + user-agent are replayed by every worker thread over curl_cffi on
-  the SAME egress (cf_clearance is bound to IP + UA). A block on replay
-  drops the identity and re-harvests.
+  identity is minted ONCE on the browser box (browser_client.mint ->
+  recipes/boomplay.py: a headed Chrome through the SAME sticky proxy
+  port this pod's curl session replays on, so box and pod share the exit
+  IP; cf_clearance is bound to IP + UA), validated over curl here, then its
+  cookies + user-agent are replayed by every worker thread over curl_cffi.
+  When that exit clears the real Chrome but rejects the same cookies from
+  curl's TLS fingerprint, the identity is served in BROWSER mode: every
+  web page is an in-page fetch on the box (browser_client.fetch ->
+  recipes/boomplay_fetch.py, a kept browser keyed by the same proxy URL,
+  closed after 300 s idle). A block on replay drops the identity and
+  re-harvests on a fresh port. No browser runs on GKE (since 2026-10-22).
 
 Failure taxonomy (scraper_errors bases -> HTTP in route_glue):
   BoomplayUpstreamError  transport failure / 5xx — retried
@@ -34,7 +40,6 @@ Failure taxonomy (scraper_errors bases -> HTTP in route_glue):
   BoomplayNotFound       unknown id / region-locked / deleted
 """
 import os
-import random
 import sys
 import threading
 import time
@@ -43,10 +48,15 @@ import time
 # like under the server. Idempotent when imported normally.
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import browser_client
 import config
+from urllib.parse import urlparse
+import egress
+from browser_client import BoxRefused, BoxUnavailable
 from scraper_errors import BadRequest, Blocked, NotFound, UpstreamError
 
 from boomplay import refs
+from scraper_utils import sessions
 
 APP_BASE = "https://android.boomplaymusic.com/BoomPlayer/"
 WEB_BASE = "https://www.boomplay.com"
@@ -54,16 +64,14 @@ STATIC_BASE = "https://source.boomplaymusic.com/"
 IMPERSONATE = "chrome"
 APP_TIMEOUT = 25
 WEB_TIMEOUT = 30
+BOX_SITE = "boomplay"              # recipes/boomplay.py (the mint)
+BOX_FETCH = "boomplay-fetch"       # recipes/boomplay_fetch.py (browser mode)
 
 # Cloudflare interstitial tells, checked against the first 6KB of a body.
 CF_MARKERS = ("just a moment", "cf-chl", "challenge-platform", "cf_chl_opt",
               "performing security verification")
-# A challenged path proves the identity end-to-end.
+# A challenged path proves the identity end-to-end (the box mints on it too).
 HARVEST_SEED_URL = f"{WEB_BASE}/artists/1182"
-HARVEST_CLEAR_TIMEOUT = 100    # seconds for the challenge to clear (residential exits: 30-80 s)
-HARVEST_POLL = 1.0
-CLICK_EVERY = 15               # re-click a re-presented checkbox after N s
-MAX_CLICKS = 3
 
 
 class BoomplayUpstreamError(UpstreamError):
@@ -104,11 +112,7 @@ def _session(kind):
 def _drop_session(kind):
     sess = getattr(_local, kind, None)
     setattr(_local, kind, None)
-    if sess is not None:
-        try:
-            sess.close()
-        except Exception:
-            pass
+    sessions.close_quietly(sess)
 
 
 def _retrying(fn, what):
@@ -205,8 +209,11 @@ def fetch_text(url):
 
 
 # ---- website: shared Cloudflare identity -------------------------------------
+# An identity is {"cookies": dict, "ua": str, "proxy": str|None, "mode":
+# "curl"|"browser"}. Minted on the browser box, validated here, kept until a
+# replay is blocked (no TTL), one for the whole process.
 
-_identity = None           # {"cookies": dict, "ua": str, "proxy": str|None}
+_identity = None
 _identity_lock = threading.Lock()
 _harvest_blocked_until = 0.0   # monotonic; set when every harvest attempt failed
 _web_proxy_value = None    # the egress the identity (and every replay) uses
@@ -221,84 +228,30 @@ def looks_blocked(text):
     return any(m in low for m in CF_MARKERS)
 
 
-def _click_turnstile(page):
-    """Real mouse click on the Turnstile checkbox: the widget iframe's
-    bounding box, x at 1/9 of the width (the checkbox), y at the middle.
-    Returns True when a challenge frame was found and clicked."""
-    for frame in page.frames:
-        if not frame.url.startswith("https://challenges.cloudflare.com"):
-            continue
-        try:
-            box = frame.frame_element().bounding_box()
-        except Exception:
-            box = None
-        if not box or box.get("width", 0) < 50:
-            continue
-        x = box["x"] + box["width"] / 9 + random.uniform(-5, 5)
-        y = box["y"] + box["height"] / 2 + random.uniform(-5, 5)
-        page.mouse.move(x, y, steps=random.randint(10, 25))
-        page.wait_for_timeout(random.randint(100, 300))
-        page.mouse.down()
-        page.wait_for_timeout(random.randint(50, 150))
-        page.mouse.up()
-        return True
-    return False
+def _egress(proxy):
+    return "direct" if not proxy else proxy.rsplit("@", 1)[-1]
 
 
 def _harvest_identity(proxy):
-    """One throwaway headed patchright Chrome clears the challenge on the
-    seed page; returns {cookies, ua, proxy}. Raises on failure (the caller
-    retries on a fresh exit). The identity is validated end-to-end over curl
-    before it is handed out."""
+    """One mint on the browser box through `proxy` (recipes/boomplay.py: a
+    throwaway headed Chrome clears the challenge on the seed page); returns
+    {cookies, ua, proxy, mode}. Raises RuntimeError when the box could not
+    clear this exit (the caller retries on a fresh one) and
+    BoomplayUpstreamError when the box itself is down. The identity is
+    validated end-to-end over curl before it is handed out."""
     from curl_cffi import requests as curl_requests
-    from chrome_manager import create_scope
-    from patchright_driver import PatchrightDriver
 
-    print(f"boomplay: harvesting web identity via patchright "
-          f"(proxy={'direct' if not proxy else proxy.rsplit('@', 1)[-1]})...")
-    with create_scope():
-        driver = PatchrightDriver(proxy_url=proxy, headless=False)
+    print(f"boomplay: harvesting web identity on the browser box (proxy={_egress(proxy)})...")
     try:
-        try:
-            driver.goto(HARVEST_SEED_URL, referer="https://www.google.com/")
-        except Exception as e:
-            raise RuntimeError(f"seed navigation failed: {e}")
-        start = time.monotonic()
-        clicks, last_click = 0, None
-        while True:
-            # Cloudflare's interstitial is itself titled "www.boomplay.com",
-            # so a title merely containing "boomplay" proves nothing — the
-            # real pages end in "| Boomplay" / "| Boomplay Music".
-            title = (driver.title() or "").lower()
-            if "| boomplay" in title and "just a moment" not in title:
-                break
-            elapsed = time.monotonic() - start
-            if elapsed > HARVEST_CLEAR_TIMEOUT:
-                raise RuntimeError(f"Cloudflare challenge did not clear (clicks={clicks})")
-            due = (last_click is None and elapsed >= 3) or \
-                  (last_click is not None and time.monotonic() - last_click >= CLICK_EVERY)
-            if due and clicks < MAX_CLICKS and driver.call(_click_turnstile):
-                clicks += 1
-                last_click = time.monotonic()
-            time.sleep(HARVEST_POLL)
-        # The title flips to the real page while Cloudflare's redirect is
-        # still loading; reading the page then dies with "Execution context
-        # was destroyed". Let the navigation settle and retry the read.
-        ua = None
-        for _ in range(10):
-            try:
-                driver.call(lambda page: page.wait_for_load_state("domcontentloaded", timeout=15000))
-                ua = driver.evaluate("navigator.userAgent")
-                break
-            except Exception:
-                time.sleep(1)
-        if not ua:
-            raise RuntimeError("page never settled after the challenge cleared")
-        cookies = {c["name"]: c["value"]
-                   for c in driver.call(lambda page: page.context.cookies(WEB_BASE))}
-    except BaseException:
-        driver.close()
-        raise
+        ident = browser_client.mint(BOX_SITE, proxy=proxy)
+    except BoxRefused as e:
+        raise RuntimeError(f"the box could not clear the challenge on this exit: {e}")
+    except BoxUnavailable as e:
+        raise BoomplayUpstreamError(f"browser box unavailable: {e}")
+    cookies = {c["name"]: c["value"] for c in ident.get("cookies") or []}
+    ua = ident.get("user_agent")
+    if not ua:
+        raise RuntimeError("the box answered without a user-agent")
 
     # Fast path: the cookies replay over curl (direct egress, most exits).
     with curl_requests.Session(impersonate=IMPERSONATE) as sess:
@@ -307,24 +260,25 @@ def _harvest_identity(proxy):
         resp = sess.get(HARVEST_SEED_URL, headers={"user-agent": ua}, cookies=cookies,
                         timeout=WEB_TIMEOUT)
     if resp.status_code == 200 and not looks_blocked(resp.text):
-        driver.close()
-        print(f"boomplay: web identity ready ({len(cookies)} cookies, clicks={clicks})")
-        return {"cookies": cookies, "ua": ua, "proxy": proxy, "driver": None}
+        print(f"boomplay: web identity ready ({len(cookies)} cookies, cf_clearance="
+              f"{'yes' if 'cf_clearance' in cookies else 'no'})")
+        return {"cookies": cookies, "ua": ua, "proxy": proxy, "mode": "curl"}
 
     # On some residential exits Cloudflare clears the real Chrome but rejects
     # the same cookies from curl's TLS fingerprint (same exit IP, verified).
-    # Keep that Chrome and serve pages by in-page fetch instead — it carries
-    # the browser's own clearance and fingerprint.
+    # Serve pages by in-page fetch from a kept browser on the box on that
+    # same exit instead — it carries the browser's own clearance and
+    # fingerprint. The probe proves that browser can read a challenged page.
     try:
-        probe = driver.get(HARVEST_SEED_URL, referrer=WEB_BASE + "/")
-        if probe.status_code != 200 or looks_blocked(probe.text):
-            raise RuntimeError(f"in-browser fetch blocked too: HTTP {probe.status_code}")
-    except BaseException:
-        driver.close()
-        raise
-    print(f"boomplay: web identity ready in BROWSER mode (curl replay got HTTP "
-          f"{resp.status_code}; clicks={clicks})")
-    return {"cookies": cookies, "ua": ua, "proxy": proxy, "driver": driver}
+        probe = browser_client.fetch(BOX_FETCH, url=HARVEST_SEED_URL, proxy=proxy)
+    except BoxRefused as e:
+        raise RuntimeError(f"in-browser fetch blocked too: {e}")
+    except BoxUnavailable as e:
+        raise BoomplayUpstreamError(f"browser box unavailable: {e}")
+    if int(probe.get("status") or 0) != 200 or looks_blocked(probe.get("body")):
+        raise RuntimeError(f"in-browser fetch blocked too: HTTP {probe.get('status')}")
+    print(f"boomplay: web identity ready in BROWSER mode (curl replay got HTTP {resp.status_code})")
+    return {"cookies": cookies, "ua": ua, "proxy": proxy, "mode": "browser"}
 
 
 def _get_identity():
@@ -333,7 +287,7 @@ def _get_identity():
         if _identity is not None:
             return _identity
         # After a full round of failed harvests, fail fast for a while instead
-        # of making every queued request relaunch browsers (minutes each).
+        # of making every queued request mint again (up to 100 s each).
         wait = _harvest_blocked_until - time.monotonic()
         if wait > 0:
             raise BoomplayBlocked(f"Cloudflare clearance failed recently; retrying in {int(wait)} s")
@@ -342,6 +296,8 @@ def _get_identity():
             proxy = config.boomplay_web_proxy()
             try:
                 identity = _harvest_identity(proxy)
+            except BoomplayUpstreamError:
+                raise                   # the box is down: an upstream error, not a block; no cooldown
             except Exception as e:
                 last = e
                 print(f"boomplay: harvest attempt {attempt}/{config.BOOMPLAY_HARVEST_ATTEMPTS} failed: {e}")
@@ -356,45 +312,58 @@ def _get_identity():
 
 
 def _invalidate_identity(stale):
+    """Drop the identity iff it is still the one that got blocked. A
+    browser-mode identity's kept browser lives on the box: it is closed
+    there after 300 s idle (the next harvest uses a fresh port anyway)."""
     global _identity
     with _identity_lock:
         if _identity is stale:
             _identity = None
-            driver = (stale or {}).get("driver")
-            if driver is not None:
-                try:
-                    driver.close()
-                except Exception:
-                    pass
+
+
+def _box_candidates(identity):
+    """The kept browsers the box may serve this call from: INPAGE_BROWSER_SLOTS
+    x BROWSER_BURST_FACTOR sessions on the identity's exit (one browser per
+    identity until 2026-11-04); each warms its own Cloudflare clearance on
+    that exit. The box picks an idle one or opens another while it has
+    headroom."""
+    # the port is part of the session: the box matches candidates by key
+    # only, so a session without it would keep serving from browsers left
+    # on a burned exit after a re-harvest (like envato's host@pPORT#i)
+    port = urlparse(identity["proxy"]).port if identity.get("proxy") else "direct"
+    return [(identity["proxy"], f"boomplay@p{port}#{i}")
+            for i in range(config.burst_slots(config.INPAGE_BROWSER_SLOTS))]
 
 
 def _browser_once(path, identity):
-    """One page through the identity's kept Chrome (in-page fetch)."""
+    """One page as an in-page fetch from one of the identity's kept
+    browsers on the box (recipes/boomplay_fetch.py, keyed by the identity's
+    proxy and a slot)."""
     try:
-        resp = identity["driver"].get(WEB_BASE + path, referrer=WEB_BASE + "/")
-    except Exception as e:
-        _invalidate_identity(identity)
-        raise BoomplayUpstreamError(f"browser fetch failed: {type(e).__name__}: {e}")
-    if resp.error and not resp.status_code:
-        raise BoomplayUpstreamError(f"browser fetch failed: {resp.error}")
-    if resp.status_code in (403, 429) or looks_blocked(resp.text):
+        _i, resp = browser_client.fetch_any(BOX_FETCH, _box_candidates(identity), url=WEB_BASE + path)
+    except BoxRefused:
+        return None                 # 403/429/interstitial: the exit is burned, like a blocked curl reply
+    except BoxUnavailable as e:
+        raise BoomplayUpstreamError(f"browser fetch failed: {e}")
+    status, text = int(resp.get("status") or 0), resp.get("body") or ""
+    if status in (403, 429) or looks_blocked(text):
         return None
-    if resp.status_code == 404:
+    if status == 404:
         raise BoomplayNotFound(f"page not found: {path}")
-    if resp.status_code != 200:
-        raise BoomplayUpstreamError(f"HTTP {resp.status_code} for {path}")
-    return resp.text
+    if status != 200:
+        raise BoomplayUpstreamError(f"HTTP {status} for {path}")
+    return text
 
 
 def _web_once(path, identity):
-    if identity and identity.get("driver") is not None:
+    if identity and identity.get("mode") == "browser":
         return _browser_once(path, identity)
     sess = _session("web")
     if getattr(sess, "web_proxy", None) != _web_proxy():
         _drop_session("web")
         sess = _session("web")
     headers = {"accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-               "accept-language": "en-US,en;q=0.9",
+               "accept-language": egress.site_accept_language("boomplay"),
                "referer": WEB_BASE + "/"}
     cookies = None
     if identity:
@@ -440,8 +409,3 @@ def web_get(path):
         _invalidate_identity(identity)
         raise BoomplayBlocked(f"Cloudflare challenge on {path} after a fresh identity")
     return _retrying(once, path)
-
-
-def warm_identity():
-    """Optional startup hook: harvest before the first web request needs it."""
-    _get_identity()
